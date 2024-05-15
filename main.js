@@ -149,7 +149,6 @@ AddTasksArrayToTasksList();
 function SetTasksArrayToLocalStorage() {
   localStorage.setItem("tasks", JSON.stringify(TasksArray));
 }
-// Chat:
 TasksList.addEventListener("click", (event) => {
   if (event.target.tagName.toLowerCase() === "input") {
     const TaskId = parseInt(
