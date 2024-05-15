@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.css"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <title>ToDo Lits App</title>
+  </head>
+  <body>
+    <header>
+      <a href="#" class="header_logo" aria-label="ToDo List App Logo"
+        >ToDo <span>List</span></a
+      >
+      <button id="burger_button" class="ri-menu-line"></button>
+    </header>
+    <main>
+      <section class="container">
+        <div id="blur"></div>
+        <aside class="categories_container" id="aside_menu">
+          <ul id="categories_list"></ul>
+          <form action="" id="add_new_category_form">
+            <button id="add_new_category_button">Add</button>
+            <input type="text" id="add_new_category_input">
+          </form>
+        </aside>
+        <div class="tasks_container">
+          <div class="tasks_header">
+            <h1 id="title">All Tasks</h1>
+            <form action="" id="add_new_task_form">
+              <input
+                type="text"
+                id="add_new_task_input"
+                placeholder="Add a new task"
+              />
+              <select id="select_new_task_category">
+                <option value="test">test</option>
+              </select>
+              <button id="add_new_task_button">Add</button>
+            </form>
+          </div>
+          <ul id="tasks_list"></ul>
+        </div>
+      </section>
+    </main>
+    <script src="./main.js"></script>
+  </body>
+</html>
