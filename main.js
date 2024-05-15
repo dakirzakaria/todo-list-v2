@@ -8,11 +8,11 @@ const AddNewCategoryInput = document.getElementById("add_new_category_input");
 const CategoriesArray = JSON.parse(localStorage.getItem("categories")) || [
   {
     id: 1,
-    name: "name",
+    name: "All Tasks",
   },
   {
     id: 2,
-    name: "todo",
+    name: "Favourites",
   },
 ];
 const Title = document.getElementById("title");
