@@ -6,7 +6,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
       rel="stylesheet"
     />
     <link
@@ -14,44 +14,57 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.css"
     />
     <link rel="stylesheet" href="./style.css" />
-    <title>ToDo Lits App</title>
+    <title>ToDo List App</title>
   </head>
   <body>
-    <header>
-      <a href="#" class="header_logo" aria-label="ToDo List App Logo"
-        >ToDo <span>List</span></a
-      >
-      <button id="burger_button" class="ri-menu-line"></button>
-    </header>
     <main>
       <section class="container">
-        <div id="blur"></div>
-        <aside class="categories_container" id="aside_menu">
+        <aside class="categories_container">
+          <ul>
+            <li>
+              <button class="category_name" id="all_tasks">All Tasks</button
+              ><span class="tasks_counter" id="all_tasks_counter"></span>
+            </li>
+            <li>
+              <button class="category_name" id="checked_tasks">
+                Checked Tasks</button
+              ><span class="tasks_counter" id="checked_tasks_counter"></span>
+            </li>
+            <li>
+              <button class="category_name" id="favorites_tasks">
+                Favorites Tasks</button
+              ><span class="tasks_counter" id="favorites_tasks_counter"></span>
+            </li>
+          </ul>
           <ul id="categories_list"></ul>
-          <form action="" id="add_new_category_form">
-            <button id="add_new_category_button">Add</button>
-            <input type="text" id="add_new_category_input">
+          <form action="" id="new_category_form" class="new_category_form">
+            <button class="ri-add-line" id="new_category_button"></button>
+            <input
+              type="text"
+              placeholder="New category"
+              id="new_category_input"
+            />
           </form>
         </aside>
+        <span class="line"></span>
         <div class="tasks_container">
-          <div class="tasks_header">
-            <h1 id="title">All Tasks</h1>
-            <form action="" id="add_new_task_form">
-              <input
-                type="text"
-                id="add_new_task_input"
-                placeholder="Add a new task"
-              />
-              <select id="select_new_task_category">
-                <option value="test">test</option>
-              </select>
-              <button id="add_new_task_button">Add</button>
-            </form>
-          </div>
-          <ul id="tasks_list"></ul>
+          <h1 class="title" id="title">All Tasks</h1>
+          <form action="" id="new_task_form" class="new_task_form">
+            <input
+              type="text"
+              placeholder="Add a new task"
+              id="new_task_input"
+            />
+            <select id="new_task_category">
+            </select>
+            <button id="new_task_button">Add</button>
+          </form>
+          <ul id="tasks_list" class="tasks_list">
+            </li>
+          </ul>
         </div>
       </section>
     </main>
-    <script src="./main.js"></script>
+    <script src="./script.js"></script>
   </body>
 </html>
