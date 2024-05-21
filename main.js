@@ -1,22 +1,22 @@
 "use strict";
 // Variables:
-const BurgerButton = document.getElementById("burger_button");
+// const BurgerButton = document.getElementById("burger_button");
 const CategoriesList = document.getElementById("categories_list");
 const AddNewCategoryForm = document.getElementById("add_new_category_form");
 const AddNewCategoryButton = document.getElementById("add_new_category_button");
 const AddNewCategoryInput = document.getElementById("add_new_category_input");
 const CategoriesArray = JSON.parse(localStorage.getItem("categories")) || [
-  {
-    id: 1,
-    name: "All Tasks",
-  },
-  {
-    id: 2,
-    name: "Favourites",
-  },
+  // {
+  //   id: 1,
+  //   name: "All Tasks",
+  // },
+  // {
+  //   id: 2,
+  //   name: "Favourites",
+  // },
 ];
 const Title = document.getElementById("title");
-const BlurDiv = document.getElementById("blur");
+// const BlurDiv = document.getElementById("blur");
 const AsideMenu = document.getElementById("aside_menu");
 const AddNewTaskForm = document.getElementById("add_new_task_form");
 const AddNewTaskInput = document.getElementById("add_new_task_input");
@@ -25,14 +25,14 @@ const AddNewTaskButton = document.getElementById("add_new_task_button");
 const TasksList = document.getElementById("tasks_list");
 const TasksArray = JSON.parse(localStorage.getItem("tasks")) || [];
 // Events Listener:
-BurgerButton.addEventListener("click", () => {
-  AsideMenu.classList.toggle("show_aside");
-  BlurDiv.classList.toggle("display_block");
-});
-BlurDiv.addEventListener("click", () => {
-  AsideMenu.classList.toggle("show_aside");
-  BlurDiv.classList.toggle("display_block");
-});
+// BurgerButton.addEventListener("click", () => {
+//   AsideMenu.classList.toggle("show_aside");
+//   BlurDiv.classList.toggle("display_block");
+// });
+// BlurDiv.addEventListener("click", () => {
+//   AsideMenu.classList.toggle("show_aside");
+//   BlurDiv.classList.toggle("display_block");
+// });
 AddNewCategoryForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const AddNewCategoryInputValue = AddNewCategoryInput.value.trim();
@@ -51,7 +51,7 @@ AddNewCategoryForm.addEventListener("submit", (event) => {
 AddNewTaskForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const AddNewTaskInputValue = AddNewTaskInput.value.trim();
-  if (AddNewTaskInputValue === "") {
+  if (!AddNewTaskInputValue) {
     AddNewTaskInput.placeholder = "Please add task";
     AddNewTaskInput.style.outline = "solid 1px red";
   } else {
@@ -62,31 +62,35 @@ AddNewTaskForm.addEventListener("submit", (event) => {
   }
 });
 // Functions:
-function AddNewCategoryToCategoriesArray() {
+const addNewCategoryToCategoriesArray = ()=> {
   const AddNewCategoryInputValue = AddNewCategoryInput.value.trim();
   const NewCategory = {
     id: Date.now(),
     name: AddNewCategoryInputValue,
   };
   CategoriesArray.push(NewCategory);
-  AddCategoriesArrayToCategoriesList();
+  AddCategoriesArrayToCategoriesList(NewCategory.id, NewCategory.name);
   SetCategoriesArrayToLocalStorage();
   AddCategoriesArrayToSelectListCategories()
 }
-function AddCategoriesArrayToCategoriesList() {
-  CategoriesList.innerHTML = "";
-  CategoriesArray.forEach((category) => {
+
+function AddCategoriesArrayToCategoriesList(id,name) {
+  // CategoriesList.innerHTML = "";
+  // CategoriesArray.forEach((category) => {
     const CreteListItemElement = document.createElement("li");
     const CreteButtonElement = document.createElement("button");
+    const createSpan = document.createElement("span")
     CreteButtonElement.classList.add("category_name");
-    CreteButtonElement.setAttribute("data-id", category.id);
-    CreteButtonElement.textContent = category.name;
+    CreteButtonElement.setAttribute("data-id", id);
+    CreteButtonElement.textContent = name;
     CreteListItemElement.appendChild(CreteButtonElement);
+    CreteListItemElement.appendChild(createSpan);
     CategoriesList.appendChild(CreteListItemElement);
-  });
-  DisplayCategoryTasks()
+  // });
+  // DisplayCategoryTasks()
 }
 AddCategoriesArrayToCategoriesList();
+
 function SetCategoriesArrayToLocalStorage() {
   localStorage.setItem("categories", JSON.stringify(CategoriesArray));
 }
@@ -102,6 +106,7 @@ function AddCategoriesArrayToSelectListCategories(){
     NewTaskCategory.appendChild(CreteOptionElement)
   });
 }
+
 AddCategoriesArrayToSelectListCategories()
 
 //
@@ -130,12 +135,14 @@ function AddTasksArrayToTasksList() {
       task.category.toLowerCase().split(" ").join("_"),
       "all_tasks"
     );
-    if (task.completed) {
-      CreteInputElement.setAttribute("checked", true);
-    }
+    // if (task.completed) {
+    //   CreteInputElement.setAttribute("checked", true);
+    // }
     CreteInputElement.type = "checkbox";
+    CreteInputElement.setAttribute("checked", !task.completed)
     CreteInputElement.setAttribute("id", `task_${index}`);
     CreteLabelElement.setAttribute("for", `task_${index}`);
+    CreteLabelElement.setAttribute("data-id", task.id);
     CreteLabelElement.setAttribute("data-id", task.id);
     CreteLabelElement.textContent = task.name;
     CreteSpanElement.textContent = task.category;
@@ -160,21 +167,4 @@ TasksList.addEventListener("click", (event) => {
     SetTasksArrayToLocalStorage();
   }
 });
-function DisplayCategoryTasks() {
-  const CategoriesNames = document.querySelectorAll(".category_name");
-  CategoriesNames.forEach((category) => {
-    category.addEventListener("click", () => {
-      Title.textContent = category.textContent;
-      const CategoryValue = category.textContent;
-      console.log(category.textContent);
-      const Tasks = document.querySelectorAll(".all_tasks");
-      Tasks.forEach((task) => {
-        if (task.classList.contains(CategoryValue)) {
-          task.style.display = "flex";
-        } else {
-          task.style.display = "none";
-        }
-      });
-    });
-  });
-}
+
