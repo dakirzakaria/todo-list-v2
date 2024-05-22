@@ -95,9 +95,9 @@ newTaskForm.addEventListener("submit", (event) => {
   } else {
     pushNewTaskIntoTasksArray(newTaskInputValue);
     setTasksArrayIntoLocalStorage();
-    renderTasks();
     allTasksCounterFunc();
     renderCategories();
+    renderTasks();
     newTaskInput.value = emptyString;
   }
 });
@@ -237,23 +237,24 @@ function renderTasks(filteredTasksArray) {
       createListItemElement.addEventListener("mouseenter", () => {
         createButtonsWrapperDivElement.style.display = "flex";
       });
-
       createListItemElement.addEventListener("mouseleave", () => {
         createButtonsWrapperDivElement.style.display = "none";
       });
       const createTrashButtonElement = document.createElement("button");
       createTrashButtonElement.classList.add("trash_button");
       createTrashButtonElement.classList.add("ri-delete-bin-line");
-      createTrashButtonElement.addEventListener("click", () => {
-        tasksArray = tasksArray.filter(
-          (taskTarget) => taskTarget.id !== task.id
-        );
-        setTasksArrayIntoLocalStorage();
-        renderCategories();
-        allTasksCounterFunc();
-        checkedCounterFunc();
-        favoritesCounterFunc();
-        renderTasks();
+      createTrashButtonElement.addEventListener("click", () => {      
+        if (confirm("Are you sure you want to delete thi task?")) {
+          tasksArray = tasksArray.filter(
+            (taskTarget) => taskTarget.id !== task.id
+          );
+          setTasksArrayIntoLocalStorage();
+          allTasksCounterFunc();
+          checkedCounterFunc();
+          favoritesCounterFunc();
+          renderCategories();
+          renderTasks();
+      }
       });
       const createFavoriteButtonElement = document.createElement("button");
       createFavoriteButtonElement.classList.add("favorites_button");
