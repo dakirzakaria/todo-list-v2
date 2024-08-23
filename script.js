@@ -244,7 +244,7 @@ function renderTasks(filteredTasksArray) {
       createTrashButtonElement.classList.add("trash_button");
       createTrashButtonElement.classList.add("ri-delete-bin-line");
       createTrashButtonElement.addEventListener("click", () => {      
-        if (confirm("Are you sure you want to delete thi task?")) {
+        if (confirm("Are you sure you want to delete this task..???")) {
           tasksArray = tasksArray.filter(
             (taskTarget) => taskTarget.id !== task.id
           );
