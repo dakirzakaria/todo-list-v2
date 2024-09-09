@@ -108,7 +108,8 @@ updateTaskCounters();
 
 */
 const renderCategory = () => {
-  categoryList.innerHTML = "";
+  categoryList.innerHTML = emptyString;
+  taskCategory.innerHTML = emptyString;
   categoriesArray.forEach((category) => {
     let li = document.createElement("li");
     let button = document.createElement("button");
