@@ -1,6 +1,9 @@
 "use strict";
 
-// DOM elements:
+/*
+  -DOM elements:
+*/
+
 const categoryList = document.getElementById("category-list");
 const categoryForm = document.getElementById("category-form");
 const categoryInput = document.getElementById("category-input");
@@ -65,17 +68,13 @@ let tasksArray = JSON.parse(localStorage.getItem("tasks")) || [
 ];
 
 /*
-
   - Functions:
-
 */
 
-// Alerts the user to enter a valid name for tasks or categories:
 const showAlertForMissingName = (type) => {
   return alert(`Please enter a ${type} name before submitting!`);
 };
 
-// Checks if a name exists in the provided array (categories or tasks):
 const checkIfExists = (array, name, type) => {
   const exists = array.some(
     (item) => item.name.toLowerCase() === name.toLowerCase()
@@ -86,12 +85,10 @@ const checkIfExists = (array, name, type) => {
   return exists;
 };
 
-// Saves an array to localStorage under the specified key:
 const saveToLocalStorage = (key, array) => {
   localStorage.setItem(key, JSON.stringify(array));
 };
 
-// Function to toggle the visibility of the "Add Category" button:
 const toggleButtonVisibility = () => {
   addCategoryButton.style.display = categoryInput.value.trim()
     ? "block"
@@ -99,10 +96,6 @@ const toggleButtonVisibility = () => {
 };
 toggleButtonVisibility();
 
-// Set the default title to "All Tasks":
-title.textContent = "All Tasks";
-
-// Function to render the category list with task counts for all, checked, favorites, and individual categories:
 const renderCategory = () => {
   categoryList.innerHTML = `
   <li>
@@ -177,7 +170,6 @@ const renderCategory = () => {
 };
 renderCategory();
 
-// Function to render a task in the tasks list:
 const renderTask = (filteredTasksArray) => {
   taskList.innerHTML = "";
   const tasksToRender = filteredTasksArray || tasksArray;
@@ -197,10 +189,10 @@ const renderTask = (filteredTasksArray) => {
       taskInput.checked = task.isChecked;
       taskLabel.textContent = task.name;
       taskLabel.setAttribute("for", task.id);
-      favoriteButton.id = "favorites-button";
+      favoriteButton.classList.add("favorites-button");
       favoriteButton.classList.add("ph-heart-straight");
       favoriteButton.classList.add(task.isFavorites ? "ph-fill" : "ph-bold");
-      deleteButton.id = "delete-button";
+      deleteButton.classList.add("delete-button");
       deleteButton.classList.add("ph-bold");
       deleteButton.classList.add("ph-trash");
 
@@ -267,14 +259,13 @@ const renderTask = (filteredTasksArray) => {
   }
 };
 renderTask();
+
 /*
   - Event Listeners:
 */
 
-// Event listener for input changes to toggle button visibility:
 categoryInput.addEventListener("input", toggleButtonVisibility);
 
-// Event listener for category form submission:
 categoryForm.addEventListener("submit", (event) => {
   const categoryInputValue = categoryInput.value.trim();
 
@@ -294,7 +285,6 @@ categoryForm.addEventListener("submit", (event) => {
   }
 });
 
-// Event listener for task form submission:
 taskForm.addEventListener("submit", (event) => {
   const taskInputValue = taskInput.value.trim();
   const selectedCategory = taskCategory.value;
@@ -322,7 +312,6 @@ taskForm.addEventListener("submit", (event) => {
   }
 });
 
-// Input event listener for filtering tasks based on user input:
 taskInput.addEventListener("input", () => {
   const filteredTasks = tasksArray.filter((task) =>
     task.name.toLowerCase().includes(taskInput.value.trim().toLowerCase())

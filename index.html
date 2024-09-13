@@ -14,9 +14,9 @@
     <script src="./main.js" defer></script>
     <title>Document</title>
   </head>
-  <body class="">
+  <body>
     <aside class="sidebar">
-      <a href="#" class="logo"> ToDoList</a>
+      <a href="#" class="logo"> ToDo<span>List</span></a>
       <ul class="category-list" id="category-list">
         <li>
           <button type="button">All Tasks</button>
@@ -44,11 +44,11 @@
         ></button>
       </form>
     </aside>
-    <br />
-    <main id="main">
+    <span class="line"></span>
+    <main class="main">
       <section>
-        <h1 id="title"></h1>
-        <form id="task-form">
+        <h1 class="title" id="title">All Tasks</h1>
+        <form class="task-form" id="task-form">
           <input
             type="text"
             id="task-input"
@@ -61,7 +61,7 @@
           </select>
           <button type="submit" id="add-task-button">Add</button>
         </form>
-        <ul id="task-list"></ul>
+        <ul class="task-list" id="task-list"></ul>
       </section>
     </main>
   </body>
