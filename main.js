@@ -1,23 +1,25 @@
 "use strict";
 
-const emptyString = "";
-
-// DOM elements
+// DOM elements:
 const categoryList = document.getElementById("category-list");
 const categoryForm = document.getElementById("category-form");
 const categoryInput = document.getElementById("category-input");
 const addCategoryButton = document.getElementById("add-category-button");
-const allTasksCount = document.getElementById("all-tasks-count");
-const checkedTasksCount = document.getElementById("checked-tasks-count");
-const favoritesTasksCount = document.getElementById("favorites-tasks-count");
-
 let categoriesArray = JSON.parse(localStorage.getItem("categories")) || [
-  "Uncategorized",
-  "Groceries",
-  "Work",
-  "Study",
-  "Sports",
+  {
+    name: "Groceries",
+  },
+  {
+    name: "Work",
+  },
+  {
+    name: "Study",
+  },
+  {
+    name: "Sports",
+  },
 ];
+
 const title = document.getElementById("title");
 const taskForm = document.getElementById("task-form");
 const taskInput = document.getElementById("task-input");
@@ -62,20 +64,34 @@ let tasksArray = JSON.parse(localStorage.getItem("tasks")) || [
   },
 ];
 
-//--------------------------------------------------------------
-
 /*
-  Function to check if a category already exists in the categories array
+
+  - Functions:
+
 */
-const checkCategoryExists = (categoryName) => {
-  return categoriesArray.some(
-    (category) => category.toLowerCase() === categoryName.toLowerCase()
-  );
+
+// Alerts the user to enter a valid name for tasks or categories:
+const showAlertForMissingName = (type) => {
+  return alert(`Please enter a ${type} name before submitting!`);
 };
 
-/*
-  Function to toggle the visibility of the "Add Category" button
-*/
+// Checks if a name exists in the provided array (categories or tasks):
+const checkIfExists = (array, name, type) => {
+  const exists = array.some(
+    (item) => item.name.toLowerCase() === name.toLowerCase()
+  );
+  exists
+    ? alert(`A ${type} with the name "${name}" already exists in your list!`)
+    : null;
+  return exists;
+};
+
+// Saves an array to localStorage under the specified key:
+const saveToLocalStorage = (key, array) => {
+  localStorage.setItem(key, JSON.stringify(array));
+};
+
+// Function to toggle the visibility of the "Add Category" button:
 const toggleButtonVisibility = () => {
   addCategoryButton.style.display = categoryInput.value.trim()
     ? "block"
@@ -83,74 +99,85 @@ const toggleButtonVisibility = () => {
 };
 toggleButtonVisibility();
 
-/*
-  Function to save the categories array to localStorage 
-*/
-const saveCategories = () => {
-  localStorage.setItem("categories", JSON.stringify(categoriesArray));
-};
+// Set the default title to "All Tasks":
+title.textContent = "All Tasks";
 
-/*
-  Function to update task counters
-*/
-const updateTaskCounters = () => {
-  const allTasks = tasksArray.length;
-  const checkedTasks = tasksArray.filter((task) => task.isChecked).length;
-  const favoritesTasks = tasksArray.filter((task) => task.isFavorites).length;
-
-  allTasksCount.textContent = `(${allTasks})`;
-  checkedTasksCount.textContent = `(${checkedTasks})`;
-  favoritesTasksCount.textContent = `(${favoritesTasks})`;
-};
-updateTaskCounters();
-
-/*
-
-*/
+// Function to render the category list with task counts for all, checked, favorites, and individual categories:
 const renderCategory = () => {
-  categoryList.innerHTML = emptyString;
-  taskCategory.innerHTML = emptyString;
+  categoryList.innerHTML = `
+  <li>
+    <button type="button" data-category="all">All Tasks</button>
+    <span id="all-tasks-count">(${tasksArray.length})</span>
+  </li>
+  <li>
+    <button type="button" data-category="checked">Checked Tasks</button>
+    <span id="checked-tasks-count">(${
+      tasksArray.filter((task) => task.isChecked).length
+    })</span>
+  </li>
+  <li>
+    <button type="button" data-category="favorites">Favorites Task</button>
+    <span id="favorites-tasks-count">(${
+      tasksArray.filter((task) => task.isFavorites).length
+    })</span>
+  </li>
+  `;
+
+  taskCategory.innerHTML = `<option value="" selected disabled>Select a Category</option>`;
+
   categoriesArray.forEach((category) => {
-    let li = document.createElement("li");
-    let button = document.createElement("button");
-    let span = document.createElement("span");
+    let categoryItem = document.createElement("li");
+    let categoryName = document.createElement("button");
+    let tasksCounter = document.createElement("span");
     let option = document.createElement("option");
-    button.textContent = category;
-    button.classList.add("category-button");
-    span.textContent = `(${
+
+    categoryName.textContent = category.name;
+    categoryName.classList.add("category-button");
+    categoryName.dataset.category = category.name.toLowerCase();
+    tasksCounter.textContent = `(${
       tasksArray.filter(
-        (task) => task.category.toLowerCase() === category.toLowerCase()
+        (task) => task.category.toLowerCase() === category.name.toLowerCase()
       ).length
     })`;
-    option.textContent = category;
-    option.value = category.toLowerCase();
-    li.appendChild(button);
-    li.appendChild(span);
-    categoryList.appendChild(li);
+    option.textContent = category.name;
+    option.value = category.name.toLowerCase();
+
+    categoryItem.appendChild(categoryName);
+    categoryItem.appendChild(tasksCounter);
+    categoryList.appendChild(categoryItem);
     taskCategory.appendChild(option);
+  });
+
+  const categoryButtons = document.querySelectorAll(
+    ".category-button, [data-category]"
+  );
+  categoryButtons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      const selectedCategory = event.target.dataset.category;
+      if (selectedCategory === "all") {
+        title.textContent = "All Tasks";
+        renderTask(tasksArray);
+      } else if (selectedCategory === "checked") {
+        title.textContent = "Checked Tasks";
+        renderTask(tasksArray.filter((task) => task.isChecked));
+      } else if (selectedCategory === "favorites") {
+        title.textContent = "Favorites Tasks";
+        renderTask(tasksArray.filter((task) => task.isFavorites));
+      } else {
+        title.textContent =
+          selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1);
+        renderTask(
+          tasksArray.filter(
+            (task) => task.category.toLowerCase() === selectedCategory
+          )
+        );
+      }
+    });
   });
 };
 renderCategory();
 
-/*
-  Function to save the tasks array to localStorage 
-*/
-const saveTasks = () => {
-  localStorage.setItem("tasks", JSON.stringify(tasksArray));
-};
-
-/*
-  Function to check if a task already exists in the tasks array
-*/
-const checkTaskExists = (taskName) => {
-  return tasksArray.some(
-    (task) => task.name.toLowerCase() === taskName.toLowerCase()
-  );
-};
-
-/*
-  Function to render a task in the tasks list
-*/
+// Function to render a task in the tasks list:
 const renderTask = (filteredTasksArray) => {
   taskList.innerHTML = "";
   const tasksToRender = filteredTasksArray || tasksArray;
@@ -171,17 +198,17 @@ const renderTask = (filteredTasksArray) => {
       taskLabel.textContent = task.name;
       taskLabel.setAttribute("for", task.id);
       favoriteButton.id = "favorites-button";
-      favoriteButton.classList.add(
-        task.isFavorites ? "ri-heart-fill" : "ri-heart-line"
-      );
+      favoriteButton.classList.add("ph-heart-straight");
+      favoriteButton.classList.add(task.isFavorites ? "ph-fill" : "ph-bold");
       deleteButton.id = "delete-button";
-      deleteButton.classList.add("ri-delete-bin-fill");
+      deleteButton.classList.add("ph-bold");
+      deleteButton.classList.add("ph-trash");
 
       categoriesArray.forEach((category) => {
         const option = document.createElement("option");
-        option.value = category.toLowerCase();
-        option.textContent = category;
-        if (task.category.toLowerCase() === category.toLowerCase()) {
+        option.value = category.name.toLowerCase();
+        option.textContent = category.name;
+        if (task.category.toLowerCase() === category.name.toLowerCase()) {
           option.selected = true;
         }
         categorySelect.appendChild(option);
@@ -189,31 +216,35 @@ const renderTask = (filteredTasksArray) => {
 
       categorySelect.addEventListener("change", (event) => {
         task.category = event.target.value;
-        saveTasks();
+        saveToLocalStorage("tasks", tasksArray);
         renderCategory();
       });
 
       taskInput.addEventListener("click", () => {
         task.isChecked = taskInput.checked;
-        saveTasks();
-        updateTaskCounters();
+        saveToLocalStorage("tasks", tasksArray);
+        renderCategory();
       });
 
       favoriteButton.addEventListener("click", () => {
         task.isFavorites = !task.isFavorites;
-        saveTasks();
+        saveToLocalStorage("tasks", tasksArray);
         renderTask();
-        updateTaskCounters();
+        renderCategory();
       });
 
       deleteButton.addEventListener("click", () => {
-        if (confirm("Please confirm if you want to delete this task.")) {
+        if (
+          confirm(
+            `Are you sure you want to permanently delete the task "${task.name}"? This action cannot be undone.`
+          )
+        ) {
           tasksArray = tasksArray.filter(
             (taskTarget) => taskTarget.id !== task.id
           );
-          saveTasks();
+          saveToLocalStorage("tasks", tasksArray);
           renderTask();
-          updateTaskCounters();
+          renderCategory();
         }
       });
 
@@ -236,66 +267,63 @@ const renderTask = (filteredTasksArray) => {
   }
 };
 renderTask();
-
 /*
-  Task form submission logic
+  - Event Listeners:
 */
+
+// Event listener for input changes to toggle button visibility:
+categoryInput.addEventListener("input", toggleButtonVisibility);
+
+// Event listener for category form submission:
 categoryForm.addEventListener("submit", (event) => {
-  event.preventDefault();
   const categoryInputValue = categoryInput.value.trim();
+
+  event.preventDefault();
   if (!categoryInputValue) {
-    alert("Please enter a category name before submitting!");
-  } else if (checkCategoryExists(categoryInputValue)) {
-    alert("A category with this name already exists in your list!");
+    showAlertForMissingName("Category");
+  } else if (checkIfExists(categoriesArray, categoryInputValue, "category")) {
   } else {
-    categoriesArray.push(categoryInputValue);
-    saveCategories();
+    categoriesArray.push({
+      name: categoryInputValue,
+    });
+    saveToLocalStorage("categories", categoriesArray);
     renderCategory();
     renderTask();
-    categoryInput.value = emptyString;
+    categoryInput.value = "";
     toggleButtonVisibility();
   }
 });
 
-/*
-  Add an event listener to the category input field to call
-  toggleButtonVisibility whenever the input changes
-*/
-categoryInput.addEventListener("input", toggleButtonVisibility);
-
-/* 
-  Task form submission logic
-*/
+// Event listener for task form submission:
 taskForm.addEventListener("submit", (event) => {
   const taskInputValue = taskInput.value.trim();
-  const selectedCategory =
-    taskCategory.value === "Categories" ? "Uncategorized" : taskCategory.value;
+  const selectedCategory = taskCategory.value;
+
   event.preventDefault();
   if (!taskInputValue) {
-    alert("Please enter a task!");
-  } else if (checkTaskExists(taskInputValue)) {
-    alert("A task with this name already exists in your list!");
+    showAlertForMissingName("Task");
+  } else if (checkIfExists(tasksArray, taskInputValue, "task")) {
+  } else if (!selectedCategory) {
+    alert(
+      "Please select a category to assign your task. This helps in organizing your tasks effectively."
+    );
   } else {
-    const task = {
+    tasksArray.push({
       id: Date.now(),
       name: taskInputValue,
       category: selectedCategory,
       isChecked: false,
       isFavorites: false,
-    };
-    tasksArray.push(task);
-    saveTasks();
+    });
+    saveToLocalStorage("tasks", tasksArray);
     renderTask();
-    taskInput.value = emptyString;
-    taskCategory.value = "Categories";
+    taskInput.value = "";
+    taskCategory.value = "";
   }
 });
 
-/*
-  Input event listener for filtering tasks based on user input
-*/
+// Input event listener for filtering tasks based on user input:
 taskInput.addEventListener("input", () => {
-  // const taskInputValue = taskInput.value.trim().toLowerCase();
   const filteredTasks = tasksArray.filter((task) =>
     task.name.toLowerCase().includes(taskInput.value.trim().toLowerCase())
   );
