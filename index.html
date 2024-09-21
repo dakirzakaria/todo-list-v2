@@ -1,68 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="./styles.css" />
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <script src="./main.js" defer></script>
-    <title>Document</title>
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="author" content="Zakaria Dakir" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta
+        name="description"
+        content="Stay organized and focused with our easy-to-use to-do list tool. Create, prioritize, and manage your tasks with ease."
+      />
+      <meta
+        name="keywords"
+        content="to-do list, task manager, daily planner, productivity tool, task tracker, organize tasks, prioritize tasks, manage deadlines, stay focused, boost productivity, simplify life, goal achievement"
+      />
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap"
+        rel="stylesheet"
+      />
+      <link rel="stylesheet" href="./styles.css" />
+      <script src="https://unpkg.com/@phosphor-icons/web"></script>
+      <script type="module" src="./data.js" defer></script>
+      <script type="module" src="./script.js" defer></script>
+      <title>Task Tracker: Simplify Your Life</title>
+    </head>
   </head>
   <body>
     <aside class="sidebar">
-      <a href="#" class="logo"> ToDo<span>List</span></a>
-      <ul class="category-list" id="category-list">
-        <li>
-          <button type="button">All Tasks</button>
-          <span id="all-tasks-count"></span>
-        </li>
-        <li>
-          <button type="button">Checked Tasks</button
-          ><span id="checked-tasks-count"></span>
-        </li>
-        <li>
-          <button type="button">Favorites Task</button
-          ><span id="favorites-tasks-count"></span>
-        </li>
-      </ul>
-      <form id="category-form" class="category-form">
-        <input
-          type="text"
-          id="category-input"
-          placeholder="Add a new category"
-        />
-        <button
-          type="submit"
-          id="add-category-button"
-          class="ph-bold ph-plus"
-        ></button>
+      <a href="#" class="logo">Task<span>Tracker</span></a>
+      <ul id="category-list"></ul>
+      <form id="add-category-form">
+        <input type="text" id="category-name-input" placeholder="Add a new category"/>
+        <button type="submit" id="add-category-button">Add</button>
       </form>
     </aside>
     <span class="line"></span>
     <main class="main">
-      <section>
-        <h1 class="title" id="title">All Tasks</h1>
-        <form class="task-form" id="task-form">
-          <input
-            type="text"
-            id="task-input"
-            placeholder="Add task or search by name"
-          />
-          <select id="task-category">
-            <option value="" selected disabled>
-              Select a Category
-            </option>
-          </select>
-          <button type="submit" id="add-task-button">Add</button>
-        </form>
-        <ul class="task-list" id="task-list"></ul>
-      </section>
+      <h1 id="title"></h1>
+      <form id="add-task-form">
+        <input
+          type="text"
+          id="task-name-input"
+          class="hidden"
+          placeholder="Add your new task here..."
+        />
+        <input
+          type="text"
+          id="search-task-input"
+          class="hidden"
+          placeholder="Search by task name..."
+        />
+        <select id="new-task-category" class="hidden">
+          <option value="" hidden selected disabled>Select Category</option>
+        </select>
+        <button type="button" id="add-task-button">Add</button>
+        <button type="button" id="search-task-button">Search</button>
+      </form>
+      <ul id="task-list"></ul>
     </main>
   </body>
 </html>
