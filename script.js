@@ -117,6 +117,7 @@ const renderCategories = () => {
 renderCategories();
 
 const renderCategoryToCategorySelectList = () => {
+  newTaskCategory.innerHTML = `<option value="">Select Category</option>`;
   let categoriesOptions = categoriesArray
     .slice(3)
     .map((category) => {
@@ -238,6 +239,8 @@ addCategoryForm.addEventListener("submit", (event) => {
     categoriesArray.push({ name: newCategoryName });
     saveDataToLocalStorage("categories", categoriesArray);
     renderCategories();
+    renderTasks();
+    renderCategoryToCategorySelectList();
     categoryNameInput.value = "";
     showAddNewCategoryButton();
   }
